@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Boom Blocks!">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>💥 Boom Blocks! - Ultimate Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="game-container">
+        <!-- Particle System -->
+        <div id="particleSystem" class="particle-system"></div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="neon-title">
+                <h1 class="title-text">💥 BOOM BLOCKS! 💥</h1>
+                <div class="subtitle">ULTIMATE EDITION</div>
+            </div>
+            <div class="game-description">
+                <p>🎮 Next-gen block puzzle with AI-powered movement</p>
+                <p>🔥 Explosive special abilities & chain reactions</p>
+                <p>⚡ Dynamic physics & satisfying effects</p>
+            </div>
+            <div class="menu-buttons">
+                <button class="neon-button primary" onclick="startGame()">
+                    <span>🚀 START GAME</span>
+                </button>
+                <button class="neon-button secondary" onclick="showInstructions()">
+                    <span>📖 HOW TO PLAY</span>
+                </button>
+                <button class="neon-button secondary" onclick="showSettings()">
+                    <span>⚙️ SETTINGS</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions Screen -->
+        <div id="instructionsScreen" class="screen">
+            <div class="instructions-panel">
+                <h2 class="panel-title">🎯 Master the Game</h2>
+                <div class="instruction-grid">
+                    <div class="instruction-card">
+                        <div class="card-icon">🎮</div>
+                        <h3>Basic Controls</h3>
+                        <p>• Drag & drop shapes onto the grid<br>
+                        • Click shapes to auto-place smartly<br>
+                        • Double-click to rotate pieces</p>
+                    </div>
+                    
+                    <div class="instruction-card special">
+                        <div class="card-icon">💥</div>
+                        <h3>Special Blocks</h3>
+                        <div class="special-list">
+                            <div class="special-item">💣 <strong>Mega Bomb:</strong> 5×5 explosion radius!</div>
+                            <div class="special-item">🌊 <strong>Tsunami Slime:</strong> Spreads & consumes blocks</div>
+                            <div class="special-item">👻 <strong>Phase Ghost:</strong> Phases through matter</div>
+                            <div class="special-item">🌈 <strong>Rainbow Prism:</strong> Color-chain reactions</div>
+                            <div class="special-item">🧲 <strong>Super Magnet:</strong> Reorganizes entire board</div>
+                            <div class="special-item">⚡ <strong>Lightning:</strong> Strikes random lines</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-card">
+                        <div class="card-icon">🎲</div>
+                        <h3>Chaos Events</h3>
+                        <p>• Random power-ups spawn<br>
+                        • Block mutations occur<br>
+                        • Reality-bending effects activate</p>
+                    </div>
+                </div>
+                <button class="neon-button primary" onclick="backToStart()">
+                    <span>← BACK TO MENU</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settingsScreen" class="screen">
+            <div class="settings-panel">
+                <h2 class="panel-title">⚙️ Game Settings</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label>🔊 Sound Effects</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>✨ Visual Effects</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="effectsToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>📱 Vibration</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="vibrationToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>🎨 Theme</label>
+                        <select id="themeSelect" class="neon-select">
+                            <option value="neon">Neon Cyber</option>
+                            <option value="space">Space Odyssey</option>
+                            <option value="retro">Retro Arcade</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="neon-button primary" onclick="backToStart()">
+                    <span>← BACK TO MENU</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <!-- HUD -->
+            <div class="game-hud">
+                <div class="hud-left">
+                    <div class="score-panel">
+                        <div class="score-label">SCORE</div>
+                        <div class="score-value" id="score">0</div>
+                    </div>
+                    <div class="combo-panel">
+                        <div class="combo-label">COMBO</div>
+                        <div class="combo-value" id="comboCount">0</div>
+                    </div>
+                </div>
+                
+                <div class="hud-center">
+                    <div class="level-indicator">
+                        <div class="level-text">LVL <span id="level">1</span></div>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xpFill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hud-right">
+                    <div class="high-score-panel">
+                        <div class="high-score-label">BEST</div>
+                        <div class="high-score-value" id="highScore">0</div>
+                    </div>
+                    <button class="hud-button" onclick="pauseGame()">⏸️</button>
+                </div>
+            </div>
+
+            <!-- Main Game Area -->
+            <div class="game-area">
+                <div class="board-container">
+                    <div id="gameBoard" class="game-board"></div>
+                    <div id="boardEffects" class="board-effects"></div>
+                </div>
+                
+                <!-- Next Shapes Preview -->
+                <div class="shapes-sidebar">
+                    <div class="shapes-title">NEXT BLOCKS</div>
+                    <div id="shapesContainer" class="shapes-container"></div>
+                    <div class="power-ups">
+                        <div class="power-up-slot" id="powerUp1">
+                            <div class="power-up-icon">🔥</div>
+                            <div class="power-up-count">3</div>
+                        </div>
+                        <div class="power-up-slot" id="powerUp2">
+                            <div class="power-up-icon">❄️</div>
+                            <div class="power-up-count">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Abilities Bar -->
+            <div class="abilities-bar">
+                <button class="ability-btn" id="bombAbility" onclick="useAbility('bomb')">
+                    <div class="ability-icon">💣</div>
+                    <div class="ability-cooldown" id="bombCooldown"></div>
+                </button>
+                <button class="ability-btn" id="lightningAbility" onclick="useAbility('lightning')">
+                    <div class="ability-icon">⚡</div>
+                    <div class="ability-cooldown" id="lightningCooldown"></div>
+                </button>
+                <button class="ability-btn" id="magnetAbility" onclick="useAbility('magnet')">
+                    <div class="ability-icon">🧲</div>
+                    <div class="ability-cooldown" id="magnetCooldown"></div>
+                </button>
+                <button class="ability-btn" id="freezeAbility" onclick="useAbility('freeze')">
+                    <div class="ability-icon">❄️</div>
+                    <div class="ability-cooldown" id="freezeCooldown"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pauseScreen" class="screen overlay">
+            <div class="pause-panel">
+                <h2>⏸️ GAME PAUSED</h2>
+                <div class="pause-stats">
+                    <div>Score: <span id="pauseScore">0</span></div>
+                    <div>Level: <span id="pauseLevel">1</span></div>
+                    <div>Time: <span id="pauseTime">00:00</span></div>
+                </div>
+                <div class="pause-buttons">
+                    <button class="neon-button primary" onclick="resumeGame()">
+                        <span>▶️ RESUME</span>
+                    </button>
+                    <button class="neon-button secondary" onclick="endGame()">
+                        <span>🏠 MAIN MENU</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen">
+            <div class="game-over-panel">
+                <div class="game-over-title">GAME OVER</div>
+                <div class="final-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="finalScore">0</div>
+                        <div class="stat-label">FINAL SCORE</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="finalLevel">1</div>
+                        <div class="stat-label">LEVEL REACHED</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="maxCombo">0</div>
+                        <div class="stat-label">MAX COMBO</div>
+                    </div>
+                </div>
+                
+                <div id="newHighScore" class="new-record">
+                    🏆 NEW HIGH SCORE! 🏆
+                </div>
+                
+                <div class="achievements" id="achievementsList"></div>
+                
+                <div class="game-over-buttons">
+                    <button class="neon-button primary" onclick="startGame()">
+                        <span>🔄 PLAY AGAIN</span>
+                    </button>
+                    <button class="neon-button secondary" onclick="backToStart()">
+                        <span>🏠 MAIN MENU</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Effects -->
+    <div id="dynamicEffects" class="dynamic-effects"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
